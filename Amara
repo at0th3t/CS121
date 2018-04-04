@@ -1,0 +1,58 @@
+//Amara Tariq
+//CS 121
+//Assignment 4
+//Due: 04/06/2018
+
+//main.cpp --- main file
+
+#include "TVShowTree.h"
+//#include "TVShowTree.cpp"
+#include <iostream>
+using namespace std;
+
+//-----Function Prototypes -------
+void ReadInFile(string FileName);
+
+int main()
+{
+    ReadInFile("TVShow.txt");
+
+}
+
+void ReadInFile(string FileName)  //reads in file and creates the nodes + tree
+    {
+           ifstream x_inFile;
+           x_inFile.open(FileName);    //opening file
+           TVShow *TempNode;           //creating a node for each new tvshow added
+           string trash,temp;    //trash variable for throwaway symbols
+           cout<<"Opened file and created node"<<endl;
+
+           while (!x_inFile.eof()){
+                *TempNode=new TVShow;
+                cout<<"Starting the reading of a new node"<<endl;
+                getline(x_inFile, TempNode->Title, '(');
+                cout<<"Just got the title, title is"<< TempNode->Title<<endl;
+                cout<<"reading in the dates"<<endl;
+                x_inFile>> TempNode-> ReleaseDate;
+                x_inFile>> trash;       //throw away '-'
+                x_inFile>> TempNode->EndDate;
+                x_inFile>>trash;    //throw away ')'
+                cout<<"Done reading in the dates - dates are "<< TempNode->ReleaseDate<<" "<< TempNode->EndDate<<end;
+
+                getline(x_inFile, TempNode->Genre);
+                getline(x_inFile, TempNode->Link);
+                cout<<"finished with genre and link "<<endl;
+                cout<<"Starting reading in actor loop"<<endl;
+
+                for (int i =0; i<10; i++)
+                {
+                    getline(x_inFile, temp);        //gets the next line
+                    if(temp=="")        //if blank/empty line (indicating end of actor list)
+                        i=10;           //sets i to max and breaks out of loop
+                    else
+                        TempNode->Actors[i]=temp;     //otherwise adds actor to the actor array
+                }
+                cout<<"Finished reading in the new node"<<endl;
+           }
+        }
+
